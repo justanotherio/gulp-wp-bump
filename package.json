@@ -1,0 +1,33 @@
+{
+  "name": "gulp-wp-bump",
+  "version": "0.1.0",
+  "description": "Revisions CSS and JS assets within a Wordpress theme's functions.php file",
+  "author": "justanother.io admin@justanother.io http://justanother.io",
+  "homepage": "https://github.com/justanotherio/gulp-wp-bump#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justanotherio/gulp-wp-bump"
+  },
+  "keywords": [
+    "gulpplugin",
+    "wordpress",
+    "themes",
+    "gulp",
+    "functions.php",
+    "version",
+    "versioning",
+    "revision",
+    "wp"
+  ],
+  "dependencies": {
+    "gulp-util": "^3.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/justanotherio/gulp-wp-bump/issues"
+  }
+}
