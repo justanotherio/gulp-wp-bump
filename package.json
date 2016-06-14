@@ -1,6 +1,6 @@
 {
   "name": "gulp-wp-bump",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Revisions CSS and JS assets within a Wordpress theme's functions.php file",
   "author": "justanother.io admin@justanother.io http://justanother.io",
   "homepage": "https://github.com/justanotherio/gulp-wp-bump#readme",
