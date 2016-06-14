@@ -10,8 +10,8 @@ gulp.task('styles', function() {
     return gulp.src( '/sass/style.scss' )
     .pipe( sass().on('error', sass.logError) )
     .pipe( rename({suffix: '.min'}) )
-    .pipe( bump('wp-content/themes/mytheme/functions.php') );
-    .pipe( gulp.dest( 'wp-content/themes/mytheme//assets/styles') );
+    .pipe( bump('/wp-content/themes/mytheme/functions.php') );
+    .pipe( gulp.dest( '/wp-content/themes/mytheme/assets/styles') );
 });
 ```
 Please note: any package that changes the filename must be called before gulp-wp-bump.
