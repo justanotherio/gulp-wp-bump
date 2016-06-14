@@ -32,8 +32,8 @@ function bumpVersion(match) {
     var endCap = endOfFunction[1];
     functionSections[functionSections.length -1] = endOfFunction[0];
 
-    // Sets dependency arg to false if not present
-    functionSections[2] = functionSections[2] || ' false';
+    // Sets dependency arg to empty array if not present
+    functionSections[2] = functionSections[2] || ' array()';
 
     // Changes version
     var token = crypto.randomBytes(7).toString('hex');
@@ -41,7 +41,7 @@ function bumpVersion(match) {
 
     // Assemble function and validate before returning
     var updatedFunction = functionSections.join(',') + endCap;
-    var validationRegex = new RegExp('wp_enqueue_(?:style|script)\\(\\s*(\'[^,]*?\')(\\s*?,\\s*)([^,]*)(\\s*?,\\s*)(true|false|array.*?\\))(\\s*?,\\s*)(\'[a-zA-Z0-9]*\')(\\s*?,\\s*)?(true|false|all|print|screen|speach)?\\s*\\);', 'gi');
+    var validationRegex = new RegExp('wp_enqueue_(?:style|script)\\(\\s*(\'[^,]*?\')(\\s*?,\\s*)([^,]*)(\\s*?,\\s*)(null|false|array.*?\\))(\\s*?,\\s*)(\'[a-zA-Z0-9]*\')(\\s*?,\\s*)?(true|false|all|print|screen|speach)?\\s*\\);', 'gi');
 
     if ( validationRegex.test(updatedFunction) ) {
         return updatedFunction;
