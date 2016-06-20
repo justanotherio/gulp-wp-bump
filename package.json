@@ -1,7 +1,7 @@
 {
   "name": "gulp-wp-bump",
-  "version": "0.1.1",
-  "description": "Revisions CSS and JS assets within a Wordpress theme's functions.php file",
+  "version": "0.2.0",
+  "description": "Gulp plugin to revise CSS and JS assets within a Wordpress theme's functions.php file",
   "author": "justanother.io admin@justanother.io http://justanother.io",
   "homepage": "https://github.com/justanotherio/gulp-wp-bump#readme",
   "license": "MIT",
@@ -25,7 +25,8 @@
     "wp"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.1"
+    "gulp-util": "^3.0.1",
+    "wp-bump": "^0.1.0"
   },
   "bugs": {
     "url": "https://github.com/justanotherio/gulp-wp-bump/issues"
