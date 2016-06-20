@@ -2,55 +2,8 @@
 var stream = require('stream');
 var path = require('path');
 var fs = require('fs');
-var crypto = require('crypto');
 var gutil = require('gulp-util');
-
-function bumpVersion(match) {
-    // Start by checking if match is a comment and skip if it is
-    var commentRegEx = new RegExp('\\s*?\\/\\/\\s*?wp_');
-    if (commentRegEx.test(match)) {
-        return match;
-    }
-
-    // We are going to split on commas but need to remove arrays first and save them
-    var deps = '';
-    var functionString = match.replace(/array\(.*?\)/g, function(match){
-        deps = match;
-        return '{{array_placeholder}}';
-    });
-
-    // Split function into argument sections by commas
-    var functionSections = functionString.split(',');
-
-    // Adds array args back
-    if (deps !== '') {
-        functionSections[2] = functionSections[2].replace('{{array_placeholder}}', deps);
-    }
-
-    // Removes ); from end of function, save to preserve coding style whitespace
-    var endOfFunction = functionSections[functionSections.length -1].split(/(\s*\);)/);
-    var endCap = endOfFunction[1];
-    functionSections[functionSections.length -1] = endOfFunction[0];
-
-    // Sets dependency arg to empty array if not present
-    functionSections[2] = functionSections[2] || ' array()';
-
-    // Changes version
-    var token = crypto.randomBytes(7).toString('hex');
-    functionSections[3] = ' \'' + token + '\'';
-
-    // Assemble function and validate before returning
-    var updatedFunction = functionSections.join(',') + endCap;
-    var validationRegex = new RegExp('wp_enqueue_(?:style|script)\\(\\s*(\'[^,]*?\')(\\s*?,\\s*)([^,]*)(\\s*?,\\s*)(null|false|array.*?\\))(\\s*?,\\s*)(\'[a-zA-Z0-9]*\')(\\s*?,\\s*)?(true|false|all|print|screen|speach)?\\s*\\);', 'gi');
-
-    if ( validationRegex.test(updatedFunction) ) {
-        return updatedFunction;
-    } else {
-        gutil.log('gulp-wp-bump: Bad function declaration');
-        return match;
-    }
-
-}
+var wpBump = require('wp-bump');
 
 function gulpWpBump(functionsPhp) {
 
@@ -75,15 +28,14 @@ function gulpWpBump(functionsPhp) {
             } else {
                 var gulpPath = path.parse(file.path);
                 var fileName = gulpPath.base;
-                var regex = new RegExp('((\\s*\\/\\/\\s*)?wp_enqueue_(?:style|script)\\(\\s*.*' + fileName.replace('.', '\\.') + '.*;)', 'g');
 
-                var revisionedFile = data.replace(regex, bumpVersion);
+                var revisedFile = wpBump(fileName, data);
 
-                if ( revisionedFile == data ) {
+                if ( revisedFile == data ) {
                     gutil.log('gulp-wp-bump: File revision not committed');
                 }
 
-                fs.writeFile(functionsPhp, revisionedFile, function(err){
+                fs.writeFile(functionsPhp, revisedFile, function(err){
 
                     if (err) {
                         callback( new gutil.PluginError('gulp-wp-bump', err) );
