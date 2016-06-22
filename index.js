@@ -6,19 +6,25 @@ var gutil = require('gulp-util');
 var wpBump = require('wp-bump');
 
 function gulpWpBump(functionsPhp) {
+    
+    // Check to see there is a valid functions.php file
+    try {
+        var input = fs.statSync(functionsPhp);
+
+        if ( !input.isFile() ) {
+            throw new gutil.PluginError('gulp-wp-bump', 'Requires valid functions.php file');
+        }
+
+    } catch (e) {
+        throw new gutil.PluginError('gulp-wp-bump', 'Requires valid functions.php file');
+    }
 
     var gulpStream = new stream.Transform({objectMode: true});
 
     gulpStream._transform = function(file, unused, callback) {
 
         if ( file.isNull() ) {
-            cb(null, file);
-            return;
-        }
-
-        if ( file.isStream() ) {
-            cb(new gutil.PluginError('gulp-wp-bump', 'Streaming not supported'));
-            return;
+            return callback( null, file );
         }
 
         fs.readFile(functionsPhp, {encoding: 'utf-8'}, function(err, data){
